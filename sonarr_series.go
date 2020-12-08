@@ -27,6 +27,24 @@ type SeriesRatings struct {
 	Value float64 `json:"value"`
 }
 
+type QualityValue struct {
+	ID     int    `json:"id"`
+	Name   string `json:"name"`
+	Weight int    `json:"weight"`
+}
+
+type QualityProfileValue struct {
+	Name    string         `json:"name"`
+	Allowed []QualityValue `json:"allowed"`
+	Cutoff  QualityValue   `json:"cutoff"`
+	ID      int            `json:"id"`
+}
+
+type QualityProfile struct {
+	Value    QualityProfileValue `json:"value"`
+	IsLoaded bool                `json:"isLoaded"`
+}
+
 type Series struct {
 	Title             string         `json:"title"`
 	AlternateTitles   []string       `json:"alternateTitles"`
