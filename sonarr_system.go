@@ -6,6 +6,14 @@ import (
 	"github.com/juju/errors"
 )
 
+type Backup struct {
+	Name string    `json:"name"`
+	Path string    `json:"path"`
+	Type string    `json:"type"`
+	Time time.Time `json:"time"`
+	ID   int       `json:"id"`
+}
+
 type Status struct {
 	Version           string    `json:"version"`
 	BuildTime         time.Time `json:"buildTime"`
