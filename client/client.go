@@ -1,4 +1,4 @@
-package main
+package client
 
 import (
 	"bytes"
@@ -12,38 +12,38 @@ import (
 )
 
 type ApiClient struct {
-	address string
-	apiKey  string
-	Address *url.URL
-	Client  *http.Client
+	RawAddress string
+	ApiKey     string
+	Address    *url.URL
+	Client     *http.Client
 }
 
-func (api *ApiClient) connSetup() error {
-	if api.address == "" {
-		return errors.New("No address specified")
-	} else if api.apiKey == "" {
+func (api *ApiClient) ConnSetup() error {
+	if api.RawAddress == "" {
+		return errors.New("No RawAddress specified")
+	} else if api.ApiKey == "" {
 		return errors.New("No API Key specified")
 	}
 
-	addressUrl, err := url.Parse(api.address)
+	RawAddressUrl, err := url.Parse(api.RawAddress)
 	if err != nil {
 		return err
 	}
 
-	if !strings.HasSuffix(addressUrl.Path, "/") {
-		addressUrl.Path += "/"
+	if !strings.HasSuffix(RawAddressUrl.Path, "/") {
+		RawAddressUrl.Path += "/"
 	}
-	if !strings.HasSuffix(addressUrl.Path, "api/") {
-		addressUrl.Path += "api/"
+	if !strings.HasSuffix(RawAddressUrl.Path, "api/") {
+		RawAddressUrl.Path += "api/"
 	}
-	api.address = addressUrl.String()
-	api.Address = addressUrl
+	api.RawAddress = RawAddressUrl.String()
+	api.Address = RawAddressUrl
 
 	api.Client = http.DefaultClient
 	return nil
 }
 
-func (api *ApiClient) doRequest(action, path string, params map[string]string, reqData, resData interface{}) error {
+func (api *ApiClient) DoRequest(action, path string, params map[string]string, reqData, resData interface{}) error {
 	lookupUrl := *api.Address
 	parameters := url.Values{}
 
@@ -68,7 +68,7 @@ func (api *ApiClient) doRequest(action, path string, params map[string]string, r
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Add("X-Api-Key", api.apiKey)
+	req.Header.Add("X-Api-Key", api.ApiKey)
 	response, err := api.Client.Do(req)
 
 	if err != nil {

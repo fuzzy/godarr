@@ -1,29 +1,24 @@
-package main
+package client
 
 import (
-	"fmt"
-
-	"github.com/kr/pretty"
+	"github.com/fuzzy/godarr/client"
+	"github.com/fuzzy/godarr/sonarr"
 )
 
-type SonarrClient struct {
-	api *ApiClient
-}
-
 type RadarrClient struct {
-	api *ApiClient
+	api *client.ApiClient
 }
 
 type LidarrClient struct {
-	api *ApiClient
+	api *client.ApiClient
 }
 
 type MylarrClient struct {
-	api *ApiClient
+	api *client.ApiClient
 }
 
 type GodarrClient struct {
-	Sonarr *SonarrClient
+	Sonarr *sonarr.SonarrClient
 	Radarr *RadarrClient
 	Lidarr *LidarrClient
 	Mylarr *MylarrClient
@@ -31,7 +26,7 @@ type GodarrClient struct {
 
 func NewClient() (*GodarrClient, error) {
 	return &GodarrClient{
-		Sonarr: &SonarrClient{},
+		Sonarr: &sonarr.SonarrClient{},
 		Radarr: &RadarrClient{},
 		Lidarr: &LidarrClient{},
 		Mylarr: &MylarrClient{},
@@ -39,12 +34,12 @@ func NewClient() (*GodarrClient, error) {
 }
 
 func (gd *GodarrClient) SonarrSetup(addr, akey string) error {
-	gd.Sonarr.api = &ApiClient{
-		address: addr,
-		apiKey:  akey,
+	gd.Sonarr.Api = &client.ApiClient{
+		RawAddress: addr,
+		ApiKey:     akey,
 	}
 
-	err := gd.Sonarr.api.connSetup()
+	err := gd.Sonarr.Api.ConnSetup()
 	if err != nil {
 		return err
 	}
@@ -62,14 +57,4 @@ func (gd *GodarrClient) LidarrSetup(addr, akey string) error {
 
 func (gd *GodarrClient) MylarrSetup(addr, akey string) error {
 	return nil
-}
-
-func main() {
-	client, _ := NewClient()
-	client.SonarrSetup("http://10.0.0.65:8989", "68e63fe4a24f41879f62dc39a217309b")
-	tst, err := client.Sonarr.SystemStatus()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("%# v\n", pretty.Formatter(tst))
 }
