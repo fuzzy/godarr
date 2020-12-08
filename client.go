@@ -1,4 +1,4 @@
-package godarr
+package main
 
 import (
 	"bytes"
