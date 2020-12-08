@@ -1,4 +1,4 @@
-package main
+package sonarr
 
 import (
 	"time"
@@ -34,7 +34,7 @@ type Status struct {
 
 func (sc *SonarrClient) SystemStatus() (*Status, error) {
 	rv := &Status{}
-	err := sc.api.doRequest("GET", "system/status", map[string]string{}, nil, rv)
+	err := sc.Api.DoRequest("GET", "system/status", map[string]string{}, nil, rv)
 
 	if err != nil {
 		return nil, errors.Annotate(err, "Failed to get system status.")

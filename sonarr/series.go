@@ -1,4 +1,4 @@
-package main
+package sonarr
 
 import "time"
 
@@ -86,6 +86,6 @@ type Series struct {
 	ID                int            `json:"id"`
 }
 
-func (api *ApiClient) ListSeries() ([]*Series, error) {
+func (sc *SonarrClient) ListSeries() ([]*Series, error) {
 	return []*Series{}, nil
 }

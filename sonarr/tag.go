@@ -1,4 +1,4 @@
-package main
+package sonarr
 
 type Tag struct {
 	Label string `json:"label"`
